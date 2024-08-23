@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ECO
+      POSTGRES_USER: AMINE
+      POSTGRES_PASSWORD: AMINE
+
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 AMINE.wsgi:application
+
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
